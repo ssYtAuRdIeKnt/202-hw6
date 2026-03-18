@@ -1,49 +1,43 @@
 public class TopDownMergeSort {
-    public void sort(int[] array) {
-        if (array == null || array.length < 2) {
-            return;
-        }
-        int[] auxiliary = new int[array.length];
-        sort(array, auxiliary, 0, array.length - 1);
+    public static void sort(int[] a) {
+        int[] aux = new int[a.length];
+        sort(a, aux, 0, a.length - 1);
     }
 
-    private void sort(int[] array, int[] auxiliary, int left, int right) {
+    private static void sort(int[] a, int[] aux, int left, int right) {
         if (left >= right) {
             return;
         }
 
-        int middle = left + (right - left) / 2;
-        sort(array, auxiliary, left, middle);
-        sort(array, auxiliary, middle + 1, right);
-
-        if (array[middle] <= array[middle + 1]) {
-            return;
-        }
-
-        merge(array, auxiliary, left, middle, right);
+        int mid = left + (right - left) / 2;
+        sort(a, aux, left, mid);
+        sort(a, aux, mid + 1, right);
+        merge(a, aux, left, mid, right);
     }
 
-    private void merge(int[] array, int[] auxiliary, int left, int middle, int right) {
-        System.arraycopy(array, left, auxiliary, left, right - left + 1);
+    private static void merge(int[] a, int[] aux, int left, int mid, int right) {
+        for (int i = left; i <= right; i++) {
+            aux[i] = a[i];
+        }
 
-        int leftPointer = left;
-        int rightPointer = middle + 1;
-        int current = left;
+        int i = left;
+        int j = mid + 1;
+        int k = left;
 
-        while (leftPointer <= middle && rightPointer <= right) {
-            if (auxiliary[leftPointer] <= auxiliary[rightPointer]) {
-                array[current++] = auxiliary[leftPointer++];
+        while (i <= mid && j <= right) {
+            if (aux[i] <= aux[j]) {
+                a[k++] = aux[i++];
             } else {
-                array[current++] = auxiliary[rightPointer++];
+                a[k++] = aux[j++];
             }
         }
 
-        while (leftPointer <= middle) {
-            array[current++] = auxiliary[leftPointer++];
+        while (i <= mid) {
+            a[k++] = aux[i++];
         }
 
-        while (rightPointer <= right) {
-            array[current++] = auxiliary[rightPointer++];
+        while (j <= right) {
+            a[k++] = aux[j++];
         }
     }
 }
